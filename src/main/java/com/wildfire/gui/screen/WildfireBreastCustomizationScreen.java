@@ -2,7 +2,7 @@ package com.wildfire.gui.screen;
 
 import java.util.UUID;
 
-import com.wildfire.gui.GuiHelper;
+import com.wildfire.gui.EntityPreview;
 import com.wildfire.gui.GuiHelper;
 import com.wildfire.gui.WildfireBreastPresetList;
 import com.wildfire.gui.WildfireButton;
@@ -17,7 +17,6 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.game.inventory.SurvivalInventoryScreen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.living.player.PlayerEntity;
 
@@ -166,6 +165,7 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
 	}
 
 	private void updatePresetTab() {
+		if (PRESET_LIST == null || breastSlider == null) return;
 		boolean canHaveBreasts = getPlayer() != null && getPlayer().getGender().canHaveBreasts();
 		breastSlider.visible = canHaveBreasts && currentTab == 0;
 		xOffsetBoobSlider.visible = canHaveBreasts && currentTab == 0;
@@ -184,7 +184,7 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
 		fill(x + 28, y - 64 - 21, x + 190, y + 68, 0x55000000);
 		fill(x + 29, y - 63 - 21, x + 189, y - 60, 0x55000000);
 		GuiHelper.drawText(this.textRenderer, this.title, x + 32, y - 60 - 21, 0xFFFFFF);
-		if (currentTab == 1) {
+		if (currentTab == 1 && PRESET_LIST != null) {
 			fill(PRESET_LIST.getLeft(), PRESET_LIST.getTop(), PRESET_LIST.getRight(), PRESET_LIST.getBottom(), 0x55000000);
 		}
 	}
@@ -201,12 +201,12 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
 		int yP = this.height / 2 + 275;
 		PlayerEntity ent = findPlayerEntity();
 		if (ent != null) {
-			SurvivalInventoryScreen.renderEntity(xP, yP, 200, -20, -20, ent);
+			EntityPreview.render(xP, yP, 200, -20, -20, ent);
 		}
 
 		int x = this.width / 2;
 		int y = this.height / 2;
-		if (currentTab == 1) {
+		if (currentTab == 1 && PRESET_LIST != null) {
 			PRESET_LIST.render(mouseX, mouseY, tickDelta);
 			if (PRESET_LIST.getPresetList().length == 0) {
 				String noPresets = "No Presets Found";
@@ -220,7 +220,7 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
 	@Override
 	public void handleMouse() {
 		super.handleMouse();
-		if (PRESET_LIST != null) {
+		if (currentTab == 1 && PRESET_LIST != null) {
 			PRESET_LIST.handleMouse();
 		}
 	}
@@ -238,11 +238,11 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
 		if (currentTab == 1 && PRESET_LIST != null) {
 			PRESET_LIST.mouseReleased(mouseX, mouseY, button);
 		}
-		breastSlider.save();
-		xOffsetBoobSlider.save();
-		yOffsetBoobSlider.save();
-		zOffsetBoobSlider.save();
-		cleavageSlider.save();
+		if (breastSlider != null) breastSlider.save();
+		if (xOffsetBoobSlider != null) xOffsetBoobSlider.save();
+		if (yOffsetBoobSlider != null) yOffsetBoobSlider.save();
+		if (zOffsetBoobSlider != null) zOffsetBoobSlider.save();
+		if (cleavageSlider != null) cleavageSlider.save();
 		super.mouseReleased(mouseX, mouseY, button);
 	}
 

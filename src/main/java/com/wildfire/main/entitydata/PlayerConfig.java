@@ -183,6 +183,11 @@ public class PlayerConfig extends EntityConfig {
 	public static PlayerConfig loadCachedPlayer(UUID uuid, boolean markForSync) {
 		PlayerConfig plr = WildfireGender.getPlayerById(uuid);
 		if (plr != null) {
+			// A sync packet may have arrived while the cached file was being read; server data is authoritative,
+			// so don't overwrite it with the (possibly stale) local file.
+			if (plr.syncStatus == SyncStatus.SYNCED && !markForSync) {
+				return plr;
+			}
 			plr.syncStatus = SyncStatus.CACHED;
 			Configuration config = plr.getConfig();
 			plr.updateGender(config.get(Configuration.GENDER));

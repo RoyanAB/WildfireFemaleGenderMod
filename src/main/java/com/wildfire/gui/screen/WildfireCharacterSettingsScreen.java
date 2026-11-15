@@ -150,7 +150,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
 		GuiHelper.drawText(this.textRenderer, this.title, x - 79, yPos - 10, 4473924);
 		PlayerEntity plrEntity = findPlayerEntity();
 		if (plrEntity != null) {
-			GuiHelper.drawCenteredText(this.textRenderer, plrEntity.getName(), x, yPos - 30, 0xFFFFFF);
+			GuiHelper.drawCenteredText(this.textRenderer, plrEntity.getDisplayName().getFormattedString(), x, yPos - 30, 0xFFFFFF);
 		}
 
 		if (bounceWarning) {
@@ -163,8 +163,8 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
 
 	@Override
 	protected void mouseReleased(int mouseX, int mouseY, int button) {
-		bounceSlider.save();
-		floppySlider.save();
+		if (bounceSlider != null) bounceSlider.save();
+		if (floppySlider != null) floppySlider.save();
 		super.mouseReleased(mouseX, mouseY, button);
 	}
 

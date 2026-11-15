@@ -38,12 +38,15 @@ public class WildfireGender {
 	}
 
 	public static @NotNull PlayerConfig getOrAddPlayerById(UUID id) {
-		PlayerConfig config = PLAYER_CACHE.get(id);
-		if (config == null) {
-			config = new PlayerConfig(id);
-			PLAYER_CACHE.put(id, config);
+		// The integrated server and the client share this cache, so guard against concurrent creation.
+		synchronized (PLAYER_CACHE) {
+			PlayerConfig config = PLAYER_CACHE.get(id);
+			if (config == null) {
+				config = new PlayerConfig(id);
+				PLAYER_CACHE.put(id, config);
+			}
+			return config;
 		}
-		return config;
 	}
 
 	public static Future<Optional<PlayerConfig>> loadGenderInfo(final UUID uuid, final boolean markForSync) {

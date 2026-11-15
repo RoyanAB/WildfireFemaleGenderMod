@@ -67,7 +67,7 @@ public class WildfireEventHandler {
 		for (PlayerEntity player : client.world.players) {
 			UUID uuid = player.getUuid();
 			if (WildfireGender.getPlayerById(uuid) == null) {
-				WildfireGender.PLAYER_CACHE.put(uuid, new PlayerConfig(uuid));
+				WildfireGender.getOrAddPlayerById(uuid);
 				WildfireGender.loadGenderInfo(uuid, uuid.equals(client.player.getUuid()));
 			}
 		}

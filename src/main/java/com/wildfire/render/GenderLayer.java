@@ -199,6 +199,12 @@ public class GenderLayer<T extends LivingEntity> implements EntityRenderLayer<T>
 
 	protected void setupTransformations(T entity, ModelPart body, BreastSide side, float scale) {
 		boolean left = side == BreastSide.LEFT;
+		// In 1.12.2 HumanoidModel#render applies the crouching offset to the model itself (and pops the matrix
+		// before feature layers run), unlike 1.20 where the offset is part of the entity matrix. Replicate it here
+		// so the breast layer stays attached to the body while sneaking.
+		if (entity.isSneaking()) {
+			GlStateManager.translatef(0.0F, 0.2F, 0.0F);
+		}
 		GlStateManager.translatef(body.x * 0.0625f, body.y * 0.0625f, body.z * 0.0625f);
 		if (body.rotationZ != 0.0F) {
 			GlStateManager.rotatef((float) Math.toDegrees(body.rotationZ), 0.0F, 0.0F, 1.0F);

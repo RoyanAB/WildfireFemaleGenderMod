@@ -3,6 +3,7 @@ package com.wildfire.gui.screen;
 import java.util.Calendar;
 import java.util.UUID;
 
+import com.wildfire.gui.EntityPreview;
 import com.wildfire.gui.GuiHelper;
 import com.wildfire.gui.WildfireButton;
 import com.wildfire.main.Gender;
@@ -13,7 +14,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.game.inventory.SurvivalInventoryScreen;
 import net.minecraft.client.network.PlayerInfo;
 import net.minecraft.client.render.platform.GlStateManager;
 import net.minecraft.client.resource.language.I18n;
@@ -118,7 +118,7 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 			int yP = this.height / 2 + 40;
 			PlayerEntity ent = findPlayerEntity();
 			if (ent != null) {
-				SurvivalInventoryScreen.renderEntity(xP, yP, 45, (float) (xP - mouseX), (float) (yP - 76 - mouseY), ent);
+				EntityPreview.render(xP, yP, 45, (float) (xP - mouseX), (float) (yP - 76 - mouseY), ent);
 			}
 		}
 
