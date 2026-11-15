@@ -1,7 +1,6 @@
 package com.wildfire.mixins;
 
 import com.wildfire.render.GenderArmorLayer;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.ArmorStandRenderer;

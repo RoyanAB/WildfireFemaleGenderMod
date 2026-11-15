@@ -1,7 +1,6 @@
 package com.wildfire.mixins;
 
 import com.wildfire.main.entitydata.IModelPartsHolder;
-
 import net.minecraft.entity.data.DataAttribute;
 import net.minecraft.entity.living.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;

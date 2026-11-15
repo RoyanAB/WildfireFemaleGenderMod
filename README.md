@@ -9,9 +9,9 @@ Ornithe Standard Libraries).
 
 - Female, male and other genders, with per-player gender, breast size, separation, height,
   depth, rotation (cleavage), dual-physics (uniboob), breast physics, bounce intensity,
-  breast momentum, "hide in armor", armor physics override and female hurt sounds.
-- Full wardrobe UI (gender selection, appearance settings, character settings) with preset
-  support, player preview and the original layout/textures.
+  breast momentum, "hide in armor" and armor physics override.
+- Full wardrobe UI (gender selection, appearance settings, character settings) with player
+  preview and the original layout/textures.
 - Breast rendering on players (skin layer, jacket overlay) and chestplate rendering /
   enchantment glint on players and armor stands.
 - Physics driven breast movement (walking, falling, sneaking, sleeping, boats, minecarts,
@@ -21,7 +21,15 @@ Ornithe Standard Libraries).
 - Armor stand support: chestplates equipped by a player copy that player's breast settings
   into the item's NBT, and armor stands render the corresponding breast armor.
 - All original translations converted to the 1.12.2 `.lang` format, plus the original
-  textures and hurt sounds.
+  textures.
+
+## Differences from the original mod
+
+- The preset feature is not included. The 1.20.2 source ships an unfinished, development-only
+  preset implementation (hardcoded "Test Preset", empty delete action, missing thumbnail
+  texture); it was removed from this port rather than ported half-working.
+- The female hurt sound feature is not included; hurt sounds are the vanilla ones.
+- Netherite armor and armor trims do not exist in 1.12.2 and are therefore not supported.
 
 ## Building
 

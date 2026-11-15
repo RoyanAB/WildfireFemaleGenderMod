@@ -1,18 +1,11 @@
 package com.wildfire.main.entitydata;
 
-import java.util.HashMap;
-import java.util.UUID;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import com.wildfire.api.IGenderArmor;
 import com.wildfire.main.Gender;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.WildfireHelper;
 import com.wildfire.main.config.Configuration;
 import com.wildfire.physics.BreastPhysics;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.EquipmentSlot;
@@ -21,6 +14,11 @@ import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * <p>A stripped down version of a {@link PlayerConfig player's config}, intended for use with non-player entities.</p>
@@ -29,7 +27,7 @@ import net.minecraft.nbt.NbtCompound;
  */
 public class EntityConfig {
 
-	public static final HashMap<UUID, EntityConfig> ENTITY_CACHE = new HashMap<UUID, EntityConfig>();
+	public static final HashMap<UUID, EntityConfig> ENTITY_CACHE = new HashMap<>();
 
 	public final UUID uuid;
 	protected Gender gender = Configuration.GENDER.getDefault();

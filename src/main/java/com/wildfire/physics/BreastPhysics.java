@@ -3,7 +3,6 @@ package com.wildfire.physics;
 import com.wildfire.api.IGenderArmor;
 import com.wildfire.main.WildfireHelper;
 import com.wildfire.main.entitydata.EntityConfig;
-
 import net.minecraft.entity.living.ArmorStandEntity;
 import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.entity.living.mob.passive.animal.HorseEntity;
@@ -15,11 +14,15 @@ import net.minecraft.util.math.Vec3d;
 
 public class BreastPhysics {
 
-	// X-Axis
-	private float bounceVelX = 0, targetBounceX = 0, velocityX = 0, positionX, prePositionX;
-	// Y-Axis
+	//X-Axis
+	private float bounceVelX = 0;
+	private final float targetBounceX = 0;
+	private float velocityX = 0;
+	private float positionX;
+	private float prePositionX;
+	//Y-Axis
 	private float bounceVel = 0, targetBounceY = 0, velocity = 0, positionY, prePositionY;
-	// Rotation
+	//Rotation
 	private float bounceRotVel = 0, targetRotVel = 0, rotVelocity = 0, wfg_bounceRotation, wfg_preBounceRotation;
 
 	private boolean justSneaking = false, alreadySleeping = false;
@@ -64,7 +67,7 @@ public class BreastPhysics {
 		}
 
 		breastSize += (breastSize < targetBreastSize) ? Math.abs(breastSize - targetBreastSize) / 2f
-				: -Math.abs(breastSize - targetBreastSize) / 2f;
+			: -Math.abs(breastSize - targetBreastSize) / 2f;
 
 		Vec3d motion = entityPos.subtract(this.prePos);
 		this.prePos = entityPos;
@@ -93,7 +96,7 @@ public class BreastPhysics {
 		if (f2 < 1.0F) f2 = 1.0F;
 
 		this.targetBounceY += MathHelper.cos(entity.walkAnimationProgress * 0.6662F + (float) Math.PI) * 0.5F
-				* entity.walkAnimationSpeed * 0.5F / f2;
+			* entity.walkAnimationSpeed * 0.5F / f2;
 
 		this.targetRotVel += (float) motion.y * bounceIntensity * randomB;
 

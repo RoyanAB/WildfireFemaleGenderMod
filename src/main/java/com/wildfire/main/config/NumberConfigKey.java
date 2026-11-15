@@ -3,7 +3,6 @@ package com.wildfire.main.config;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-
 import org.jetbrains.annotations.Nullable;
 
 public abstract class NumberConfigKey<TYPE extends Number & Comparable<TYPE>> extends ConfigKey<TYPE> {
@@ -48,7 +47,7 @@ public abstract class NumberConfigKey<TYPE extends Number & Comparable<TYPE>> ex
 	public boolean validate(TYPE value) {
 		if (super.validate(value)) {
 			return (minInclusive == null || minInclusive.compareTo(value) <= 0)
-					&& (maxInclusive == null || maxInclusive.compareTo(value) >= 0);
+				&& (maxInclusive == null || maxInclusive.compareTo(value) >= 0);
 		}
 		return false;
 	}

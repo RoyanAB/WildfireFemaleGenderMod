@@ -2,7 +2,6 @@ package com.wildfire.main.networking;
 
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.entitydata.PlayerConfig;
-
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.ornithemc.osl.networking.api.PacketBuffer;
 

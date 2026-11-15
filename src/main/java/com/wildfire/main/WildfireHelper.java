@@ -1,27 +1,21 @@
 package com.wildfire.main;
 
-import java.util.concurrent.ThreadLocalRandom;
-
-import org.jetbrains.annotations.NotNull;
-
 import com.wildfire.api.IGenderArmor;
 import com.wildfire.api.WildfireAPI;
 import com.wildfire.main.entitydata.IModelPartsHolder;
 import com.wildfire.main.entitydata.PlayerConfig;
 import com.wildfire.render.armor.EmptyGenderArmor;
 import com.wildfire.render.armor.SimpleGenderArmor;
-
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class WildfireHelper {
-
-	public static int randInt(int min, int max) {
-		return ThreadLocalRandom.current().nextInt(min, max + 1);
-	}
 
 	public static float randFloat(float min, float max) {
 		return (float) ThreadLocalRandom.current().nextDouble(min, (double) max + 1);

@@ -1,13 +1,9 @@
 package com.wildfire.main;
 
-import java.util.UUID;
-import java.util.function.Consumer;
-
 import com.wildfire.gui.screen.WardrobeBrowserScreen;
 import com.wildfire.main.entitydata.EntityConfig;
 import com.wildfire.main.entitydata.PlayerConfig;
 import com.wildfire.main.networking.WildfireSyncClient;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -18,6 +14,8 @@ import net.ornithemc.osl.keybinds.api.KeybindRegistry;
 import net.ornithemc.osl.lifecycle.api.client.MinecraftClientEvents;
 import org.lwjgl.input.Keyboard;
 
+import java.util.UUID;
+
 @Environment(EnvType.CLIENT)
 public class WildfireEventHandler {
 
@@ -25,19 +23,9 @@ public class WildfireEventHandler {
 	private static long timer = 0;
 
 	public static void registerClientEvents() {
-		KeybindEvents.REGISTER_KEYBINDS.register(new Runnable() {
-			@Override
-			public void run() {
-				toggleEditGUI = KeybindRegistry.register("key.wildfire_gender.gender_menu", Keyboard.KEY_G, "category.wildfire_gender.generic");
-			}
-		});
+		KeybindEvents.REGISTER_KEYBINDS.register(() -> toggleEditGUI = KeybindRegistry.register("key.wildfire_gender.gender_menu", Keyboard.KEY_G, "category.wildfire_gender.generic"));
 
-		MinecraftClientEvents.TICK_END.register(new Consumer<Minecraft>() {
-			@Override
-			public void accept(Minecraft minecraft) {
-				onClientTick(minecraft);
-			}
-		});
+		MinecraftClientEvents.TICK_END.register(WildfireEventHandler::onClientTick);
 
 		WildfireSyncClient.registerClient();
 	}

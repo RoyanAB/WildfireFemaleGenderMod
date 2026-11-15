@@ -1,10 +1,6 @@
 package com.wildfire.gui;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
-
 import com.wildfire.main.config.FloatConfigKey;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -12,6 +8,9 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.TextRenderer;
 import net.minecraft.client.render.platform.GlStateManager;
 import net.minecraft.util.math.MathHelper;
+
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)
 public class WildfireSlider extends ButtonWidget {
@@ -28,12 +27,12 @@ public class WildfireSlider extends ButtonWidget {
 	private boolean dragging;
 
 	public WildfireSlider(int xPos, int yPos, int width, int height, FloatConfigKey config, double currentVal, Consumer<Float> valueUpdate,
-			Function<Float, String> messageUpdate, Consumer<Float> onSave) {
+						  Function<Float, String> messageUpdate, Consumer<Float> onSave) {
 		this(xPos, yPos, width, height, config.getMinInclusive(), config.getMaxInclusive(), currentVal, valueUpdate, messageUpdate, onSave);
 	}
 
 	public WildfireSlider(int xPos, int yPos, int width, int height, double minVal, double maxVal, double currentVal, Consumer<Float> valueUpdate,
-			Function<Float, String> messageUpdate, Consumer<Float> onSave) {
+						  Function<Float, String> messageUpdate, Consumer<Float> onSave) {
 		super(0, xPos, yPos, width, height, "");
 		this.minValue = minVal;
 		this.maxValue = maxVal;

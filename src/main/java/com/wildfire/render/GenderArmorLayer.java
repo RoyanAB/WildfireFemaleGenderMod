@@ -1,11 +1,8 @@
 package com.wildfire.render;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.entitydata.EntityConfig;
 import com.wildfire.render.WildfireModelRenderer.BreastModelBox;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -18,8 +15,8 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.living.ArmorStandEntity;
 import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.resource.Identifier;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 @Environment(EnvType.CLIENT)
@@ -77,7 +74,7 @@ public class GenderArmorLayer<T extends LivingEntity> extends GenderLayer<T> {
 	protected void setupTransformations(T entity, ModelPart body, BreastSide side, float scale) {
 		super.setupTransformations(entity, body, side, scale);
 		if ((entity instanceof ClientPlayerEntity && ((ClientPlayerEntity) entity).isModelPartVisible(PlayerModelPart.JACKET))
-				|| (entity instanceof ArmorStandEntity && entityConfig != null && entityConfig.hasJacketLayer())) {
+			|| (entity instanceof ArmorStandEntity && entityConfig != null && entityConfig.hasJacketLayer())) {
 			GlStateManager.translatef(0, 0, -0.015f);
 			GlStateManager.scalef(1.05f, 1.05f, 1.05f);
 		}

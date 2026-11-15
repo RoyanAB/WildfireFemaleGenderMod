@@ -1,14 +1,12 @@
 package com.wildfire.main;
 
-import java.util.ArrayList;
-import java.util.function.Consumer;
-
 import com.wildfire.main.entitydata.PlayerConfig;
 import com.wildfire.main.networking.WildfireSync;
-
 import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 import net.ornithemc.osl.entrypoints.api.ModInitializer;
 import net.ornithemc.osl.networking.api.server.ServerConnectionEvents;
+
+import java.util.ArrayList;
 
 public class WildfireGenderServer implements ModInitializer {
 
@@ -16,15 +14,9 @@ public class WildfireGenderServer implements ModInitializer {
 	public void init() {
 		// While this class is named 'Server', this is actually a common code path, so we can safely register here
 		// for both sides.
-		WildfireSounds.register();
 		WildfireSync.registerServer();
 
-		ServerConnectionEvents.PLAY_READY.register(new Consumer<ServerConnectionEvents.PlayReadyContext>() {
-			@Override
-			public void accept(ServerConnectionEvents.PlayReadyContext ctx) {
-				onPlayerJoin(ctx.player());
-			}
-		});
+		ServerConnectionEvents.PLAY_READY.register(ctx -> onPlayerJoin(ctx.player()));
 	}
 
 	/**
@@ -37,7 +29,7 @@ public class WildfireGenderServer implements ModInitializer {
 			WildfireSync.sendToAllClients(player, joining);
 		}
 
-		for (PlayerConfig config : new ArrayList<PlayerConfig>(WildfireGender.PLAYER_CACHE.values())) {
+		for (PlayerConfig config : new ArrayList<>(WildfireGender.PLAYER_CACHE.values())) {
 			if (!config.uuid.equals(player.getUuid())) {
 				WildfireSync.sendToClient(player, config);
 			}

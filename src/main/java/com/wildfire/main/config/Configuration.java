@@ -1,5 +1,12 @@
 package com.wildfire.main.config;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonWriter;
+import net.fabricmc.loader.api.FabricLoader;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -10,20 +17,11 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.UUID;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonWriter;
-
-import net.fabricmc.loader.api.FabricLoader;
-
 public class Configuration {
 
 	public static final UUIDConfigKey USERNAME = new UUIDConfigKey("username", UUID.nameUUIDFromBytes("UNKNOWN".getBytes(StandardCharsets.UTF_8)));
 	public static final GenderConfigKey GENDER = new GenderConfigKey("gender");
 	public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0.6F, 0, 0.8f);
-	public static final BooleanConfigKey HURT_SOUNDS = new BooleanConfigKey("hurt_sounds", true);
 
 	public static final FloatConfigKey BREASTS_OFFSET_X = new FloatConfigKey("breasts_xOffset", 0.0F, -1, 1);
 	public static final FloatConfigKey BREASTS_OFFSET_Y = new FloatConfigKey("breasts_yOffset", 0.0F, -1, 1);
@@ -54,36 +52,28 @@ public class Configuration {
 		CFG_FILE = saveDir.resolve(saveLoc).resolve(cfgName + ".json").toFile();
 	}
 
-	public void finish() {
+	public synchronized void finish() {
 		if (CFG_FILE.exists()) {
 			load();
 			updateConfig();
 		}
 	}
 
-	public <TYPE> void set(ConfigKey<TYPE> key, TYPE value) {
+	public synchronized <TYPE> void set(ConfigKey<TYPE> key, TYPE value) {
 		key.save(SAVE_VALUES, value);
 	}
 
-	public <TYPE> void setDefault(ConfigKey<TYPE> key) {
+	public synchronized <TYPE> void setDefault(ConfigKey<TYPE> key) {
 		if (!SAVE_VALUES.has(key.key)) {
 			set(key, key.defaultValue);
 		}
 	}
 
-	public <TYPE> TYPE get(ConfigKey<TYPE> key) {
+	public synchronized <TYPE> TYPE get(ConfigKey<TYPE> key) {
 		return key.read(SAVE_VALUES);
 	}
 
-	public void removeParameter(ConfigKey<?> key) {
-		removeParameter(key.key);
-	}
-
-	public void removeParameter(String key) {
-		SAVE_VALUES.remove(key);
-	}
-
-	public void updateConfig() {
+	public synchronized void updateConfig() {
 		JsonObject obj;
 		try (FileReader configurationFile = new FileReader(CFG_FILE)) {
 			obj = new Gson().fromJson(configurationFile, JsonObject.class);
@@ -100,7 +90,7 @@ public class Configuration {
 		}
 	}
 
-	public void save() {
+	public synchronized void save() {
 		try (FileWriter writer = new FileWriter(CFG_FILE); JsonWriter jsonWriter = new JsonWriter(writer)) {
 			jsonWriter.setIndent("		");
 			ADAPTER.write(jsonWriter, SAVE_VALUES);
@@ -109,7 +99,7 @@ public class Configuration {
 		}
 	}
 
-	public void load() {
+	public synchronized void load() {
 		try (FileReader configurationFile = new FileReader(CFG_FILE)) {
 			JsonObject obj = new Gson().fromJson(configurationFile, JsonObject.class);
 			if (obj == null) return;

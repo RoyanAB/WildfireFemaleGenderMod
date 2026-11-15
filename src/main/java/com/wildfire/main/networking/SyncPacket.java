@@ -1,12 +1,11 @@
 package com.wildfire.main.networking;
 
-import java.util.UUID;
-
 import com.wildfire.main.Gender;
 import com.wildfire.main.entitydata.Breasts;
 import com.wildfire.main.entitydata.PlayerConfig;
-
 import net.ornithemc.osl.networking.api.PacketBuffer;
+
+import java.util.UUID;
 
 abstract class SyncPacket {
 	protected final UUID uuid;
@@ -25,13 +24,10 @@ abstract class SyncPacket {
 	private final boolean uniboob;
 	private final float cleavage;
 
-	private final boolean hurtSounds;
-
 	protected SyncPacket(PlayerConfig plr) {
 		this.uuid = plr.uuid;
 		this.gender = plr.getGender();
 		this.bustSize = plr.getBustSize();
-		this.hurtSounds = plr.hasHurtSounds();
 
 		this.breastPhysics = plr.hasBreastPhysics();
 		this.showInArmor = plr.showBreastsInArmor();
@@ -51,7 +47,6 @@ abstract class SyncPacket {
 		this.uuid = buffer.readUuid();
 		this.gender = buffer.readEnum(Gender.class);
 		this.bustSize = buffer.readFloat();
-		this.hurtSounds = buffer.readBoolean();
 
 		this.breastPhysics = buffer.readBoolean();
 		this.showInArmor = buffer.readBoolean();
@@ -69,7 +64,6 @@ abstract class SyncPacket {
 		buffer.writeUuid(this.uuid);
 		buffer.writeEnum(this.gender);
 		buffer.writeFloat(this.bustSize);
-		buffer.writeBoolean(this.hurtSounds);
 		buffer.writeBoolean(this.breastPhysics);
 		buffer.writeBoolean(this.showInArmor);
 		buffer.writeFloat(this.bounceMultiplier);
@@ -85,7 +79,6 @@ abstract class SyncPacket {
 	protected void updatePlayerFromPacket(PlayerConfig plr) {
 		plr.updateGender(gender);
 		plr.updateBustSize(bustSize);
-		plr.updateHurtSounds(hurtSounds);
 
 		plr.updateBreastPhysics(breastPhysics);
 		plr.updateShowBreastsInArmor(showInArmor);

@@ -1,7 +1,6 @@
 package com.wildfire.mixins;
 
 import com.wildfire.main.entitydata.EntityConfig;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.EquipmentSlot;
@@ -14,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
-@Mixin({ ArmorStandEntity.class, PlayerEntity.class })
+@Mixin({ArmorStandEntity.class, PlayerEntity.class})
 public abstract class BreastPhysicsTickMixin {
 
 	@Inject(method = "tick", at = @At("TAIL"))

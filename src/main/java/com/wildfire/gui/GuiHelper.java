@@ -1,5 +1,6 @@
 package com.wildfire.gui;
 
+import com.wildfire.main.Gender;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -7,8 +8,6 @@ import net.minecraft.client.render.TextRenderer;
 import net.minecraft.client.render.platform.GlStateManager;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Formatting;
-
-import com.wildfire.main.Gender;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -58,7 +57,7 @@ public class GuiHelper {
 			double d = (double) Minecraft.getTime() / 1000.0;
 			double e = Math.max((double) l * 0.5, 3.0);
 			double f = Math.sin(1.5707963267948966 * Math.cos(6.283185307179586 * d / e)) / 2.0 + 0.5;
-			double g = lerp(f, 0.0, (double) l);
+			double g = lerp(f, 0.0, l);
 			enableScissor(left, top, right, bottom);
 			enableTextBlend();
 			textRenderer.draw(text, (float) (left - (int) g), (float) j, color, false);
@@ -81,7 +80,7 @@ public class GuiHelper {
 		double factorY = (double) minecraft.height / (double) Math.max(1, guiHeight);
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		GL11.glScissor((int) (left * factorX), (int) ((guiHeight - bottom) * factorY),
-				(int) ((right - left) * factorX), (int) ((bottom - top) * factorY));
+			(int) ((right - left) * factorX), (int) ((bottom - top) * factorY));
 	}
 
 	private static void disableScissor() {

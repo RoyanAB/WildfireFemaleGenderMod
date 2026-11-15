@@ -1,17 +1,14 @@
 package com.wildfire.main.entitydata;
 
-import java.util.UUID;
-import java.util.function.Consumer;
-
-import org.jetbrains.annotations.NotNull;
-
-import com.google.gson.JsonObject;
 import com.wildfire.main.Gender;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.config.ConfigKey;
 import com.wildfire.main.config.Configuration;
-
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * A version of {@link EntityConfig} backed by a {@link Configuration} for use with players.
@@ -22,7 +19,6 @@ public class PlayerConfig extends EntityConfig {
 	public SyncStatus syncStatus = SyncStatus.UNKNOWN;
 
 	private final Configuration cfg;
-	private boolean hurtSounds = Configuration.HURT_SOUNDS.getDefault();
 	private boolean armorPhysOverride = Configuration.ARMOR_PHYSICS_OVERRIDE.getDefault();
 
 	public PlayerConfig(UUID uuid) {
@@ -36,7 +32,6 @@ public class PlayerConfig extends EntityConfig {
 		this.cfg.set(Configuration.USERNAME, this.uuid);
 		this.cfg.setDefault(Configuration.GENDER);
 		this.cfg.setDefault(Configuration.BUST_SIZE);
-		this.cfg.setDefault(Configuration.HURT_SOUNDS);
 
 		this.cfg.setDefault(Configuration.BREASTS_OFFSET_X);
 		this.cfg.setDefault(Configuration.BREASTS_OFFSET_Y);
@@ -69,43 +64,15 @@ public class PlayerConfig extends EntityConfig {
 	}
 
 	public boolean updateGender(final Gender value) {
-		return updateValue(Configuration.GENDER, value, new Consumer<Gender>() {
-			@Override
-			public void accept(Gender v) {
-				gender = v;
-			}
-		});
+		return updateValue(Configuration.GENDER, value, v -> gender = v);
 	}
 
 	public boolean updateBustSize(final float value) {
-		return updateValue(Configuration.BUST_SIZE, value, new Consumer<Float>() {
-			@Override
-			public void accept(Float v) {
-				pBustSize = v;
-			}
-		});
-	}
-
-	public boolean hasHurtSounds() {
-		return hurtSounds;
-	}
-
-	public boolean updateHurtSounds(final boolean value) {
-		return updateValue(Configuration.HURT_SOUNDS, value, new Consumer<Boolean>() {
-			@Override
-			public void accept(Boolean v) {
-				hurtSounds = v;
-			}
-		});
+		return updateValue(Configuration.BUST_SIZE, value, v -> pBustSize = v);
 	}
 
 	public boolean updateBreastPhysics(final boolean value) {
-		return updateValue(Configuration.BREAST_PHYSICS, value, new Consumer<Boolean>() {
-			@Override
-			public void accept(Boolean v) {
-				breastPhysics = v;
-			}
-		});
+		return updateValue(Configuration.BREAST_PHYSICS, value, v -> breastPhysics = v);
 	}
 
 	@Override
@@ -114,12 +81,7 @@ public class PlayerConfig extends EntityConfig {
 	}
 
 	public boolean updateArmorPhysicsOverride(final boolean value) {
-		return updateValue(Configuration.ARMOR_PHYSICS_OVERRIDE, value, new Consumer<Boolean>() {
-			@Override
-			public void accept(Boolean v) {
-				armorPhysOverride = v;
-			}
-		});
+		return updateValue(Configuration.ARMOR_PHYSICS_OVERRIDE, value, v -> armorPhysOverride = v);
 	}
 
 	@Override
@@ -128,56 +90,15 @@ public class PlayerConfig extends EntityConfig {
 	}
 
 	public boolean updateShowBreastsInArmor(final boolean value) {
-		return updateValue(Configuration.SHOW_IN_ARMOR, value, new Consumer<Boolean>() {
-			@Override
-			public void accept(Boolean v) {
-				showBreastsInArmor = v;
-			}
-		});
+		return updateValue(Configuration.SHOW_IN_ARMOR, value, v -> showBreastsInArmor = v);
 	}
 
 	public boolean updateBounceMultiplier(final float value) {
-		return updateValue(Configuration.BOUNCE_MULTIPLIER, value, new Consumer<Float>() {
-			@Override
-			public void accept(Float v) {
-				bounceMultiplier = v;
-			}
-		});
+		return updateValue(Configuration.BOUNCE_MULTIPLIER, value, v -> bounceMultiplier = v);
 	}
 
 	public boolean updateFloppiness(final float value) {
-		return updateValue(Configuration.FLOPPY_MULTIPLIER, value, new Consumer<Float>() {
-			@Override
-			public void accept(Float v) {
-				floppyMultiplier = v;
-			}
-		});
-	}
-
-	public SyncStatus getSyncStatus() {
-		return this.syncStatus;
-	}
-
-	public static JsonObject toJsonObject(PlayerConfig plr) {
-		JsonObject obj = new JsonObject();
-		Configuration.USERNAME.save(obj, plr.uuid);
-		Configuration.GENDER.save(obj, plr.getGender());
-		Configuration.BUST_SIZE.save(obj, plr.getBustSize());
-		Configuration.HURT_SOUNDS.save(obj, plr.hasHurtSounds());
-
-		Configuration.BREAST_PHYSICS.save(obj, plr.hasBreastPhysics());
-		Configuration.SHOW_IN_ARMOR.save(obj, plr.showBreastsInArmor());
-		Configuration.ARMOR_PHYSICS_OVERRIDE.save(obj, plr.getArmorPhysicsOverride());
-		Configuration.BOUNCE_MULTIPLIER.save(obj, plr.getBounceMultiplier());
-		Configuration.FLOPPY_MULTIPLIER.save(obj, plr.getFloppiness());
-
-		Breasts breasts = plr.getBreasts();
-		Configuration.BREASTS_OFFSET_X.save(obj, breasts.getXOffset());
-		Configuration.BREASTS_OFFSET_Y.save(obj, breasts.getYOffset());
-		Configuration.BREASTS_OFFSET_Z.save(obj, breasts.getZOffset());
-		Configuration.BREASTS_UNIBOOB.save(obj, breasts.isUniboob());
-		Configuration.BREASTS_CLEAVAGE.save(obj, breasts.getCleavage());
-		return obj;
+		return updateValue(Configuration.FLOPPY_MULTIPLIER, value, v -> floppyMultiplier = v);
 	}
 
 	public static PlayerConfig loadCachedPlayer(UUID uuid, boolean markForSync) {
@@ -192,7 +113,6 @@ public class PlayerConfig extends EntityConfig {
 			Configuration config = plr.getConfig();
 			plr.updateGender(config.get(Configuration.GENDER));
 			plr.updateBustSize(config.get(Configuration.BUST_SIZE));
-			plr.updateHurtSounds(config.get(Configuration.HURT_SOUNDS));
 
 			plr.updateBreastPhysics(config.get(Configuration.BREAST_PHYSICS));
 			plr.updateShowBreastsInArmor(config.get(Configuration.SHOW_IN_ARMOR));
@@ -219,7 +139,6 @@ public class PlayerConfig extends EntityConfig {
 		config.set(Configuration.USERNAME, plr.uuid);
 		config.set(Configuration.GENDER, plr.getGender());
 		config.set(Configuration.BUST_SIZE, plr.getBustSize());
-		config.set(Configuration.HURT_SOUNDS, plr.hasHurtSounds());
 
 		config.set(Configuration.BREAST_PHYSICS, plr.hasBreastPhysics());
 		config.set(Configuration.SHOW_IN_ARMOR, plr.showBreastsInArmor());

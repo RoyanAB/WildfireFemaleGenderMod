@@ -37,7 +37,7 @@ public interface IGenderArmor {
 	 * wearer causing the breasts to appear up to {@code 15%} smaller.
 	 *
 	 * @return Value between {@code 0} (no tightness, no size reduction) and {@code 1} (full tightness, {@code 15%}
-	 *         size reduction).
+	 * size reduction).
 	 */
 	default float tightness() {
 		return 0;

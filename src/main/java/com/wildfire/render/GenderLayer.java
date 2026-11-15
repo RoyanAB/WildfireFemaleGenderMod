@@ -1,10 +1,5 @@
 package com.wildfire.render;
 
-import java.util.ConcurrentModificationException;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import com.wildfire.api.IGenderArmor;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.WildfireHelper;
@@ -14,18 +9,17 @@ import com.wildfire.physics.BreastPhysics;
 import com.wildfire.render.WildfireModelRenderer.BreastModelBox;
 import com.wildfire.render.WildfireModelRenderer.OverlayModelBox;
 import com.wildfire.render.WildfireModelRenderer.PositionTextureVertex;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.living.player.ClientPlayerEntity;
-import net.minecraft.client.render.texture.TextureManager;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.layer.EntityRenderLayer;
 import net.minecraft.client.render.model.ModelPart;
 import net.minecraft.client.render.model.PlayerModelPart;
 import net.minecraft.client.render.model.entity.HumanoidModel;
 import net.minecraft.client.render.platform.GlStateManager;
+import net.minecraft.client.render.texture.TextureManager;
 import net.minecraft.client.render.vertex.BufferBuilder;
 import net.minecraft.client.render.vertex.DefaultVertexFormat;
 import net.minecraft.client.render.vertex.Tesselator;
@@ -35,6 +29,9 @@ import net.minecraft.entity.living.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resource.Identifier;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ConcurrentModificationException;
 
 @Environment(EnvType.CLIENT)
 public class GenderLayer<T extends LivingEntity> implements EntityRenderLayer<T> {
@@ -48,7 +45,7 @@ public class GenderLayer<T extends LivingEntity> implements EntityRenderLayer<T>
 	protected IGenderArmor genderArmor;
 	protected boolean isChestplateOccupied, bounceEnabled, breathingAnimation;
 	protected float breastOffsetX, breastOffsetY, breastOffsetZ, lPhysPositionY, lPhysPositionX, rPhysPositionY, rTotalX,
-			lPhysBounceRotation, rPhysBounceRotation, breastSize, zOffset, outwardAngle;
+		lPhysBounceRotation, rPhysBounceRotation, breastSize, zOffset, outwardAngle;
 
 	protected final LivingEntityRenderer<?> parent;
 
@@ -69,7 +66,7 @@ public class GenderLayer<T extends LivingEntity> implements EntityRenderLayer<T>
 
 	/**
 	 * @return whether the entity itself (not its armor) is visible to the local player, and should therefore have its
-	 *         breast layer rendered.
+	 * breast layer rendered.
 	 */
 	protected boolean isEntityVisible(T entity) {
 		Minecraft mc = Minecraft.getInstance();
@@ -188,7 +185,7 @@ public class GenderLayer<T extends LivingEntity> implements EntityRenderLayer<T>
 
 		float resistance = MathHelper.clamp(genderArmor.physicsResistance(), 0, 1);
 		breathingAnimation = (entityConfig.getArmorPhysicsOverride() || resistance <= 0.5F)
-				&& (!entity.isInWater() || entity.hasStatusEffect(StatusEffects.WATER_BREATHING));
+			&& (!entity.isInWater() || entity.hasStatusEffect(StatusEffects.WATER_BREATHING));
 		bounceEnabled = entityConfig.hasBreastPhysics() && (!isChestplateOccupied || resistance < 1);
 		return true;
 	}
@@ -222,7 +219,7 @@ public class GenderLayer<T extends LivingEntity> implements EntityRenderLayer<T>
 		}
 
 		GlStateManager.translatef((left ? breastOffsetX : -breastOffsetX) * 0.0625f, 0.05625f + (breastOffsetY * 0.0625f),
-				zOffset - 0.0625f * 2f + (breastOffsetZ * 0.0625f));
+			zOffset - 0.0625f * 2f + (breastOffsetZ * 0.0625f));
 
 		if (!breasts.isUniboob()) {
 			GlStateManager.translatef(-0.0625f * 2 * (left ? 1 : -1), 0, 0);
@@ -290,9 +287,9 @@ public class GenderLayer<T extends LivingEntity> implements EntityRenderLayer<T>
 			if (quad == null) continue;
 			for (PositionTextureVertex vertex : quad.vertexPositions) {
 				buffer.vertex(vertex.x * 0.0625F, vertex.y * 0.0625F, vertex.z * 0.0625F)
-						.texture(vertex.texturePositionX, vertex.texturePositionY)
-						.normal(quad.normalX, quad.normalY, quad.normalZ)
-						.nextVertex();
+					.texture(vertex.texturePositionX, vertex.texturePositionY)
+					.normal(quad.normalX, quad.normalY, quad.normalZ)
+					.nextVertex();
 			}
 		}
 		tesselator.end();

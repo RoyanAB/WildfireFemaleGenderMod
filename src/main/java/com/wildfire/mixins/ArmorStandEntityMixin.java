@@ -3,7 +3,6 @@ package com.wildfire.mixins;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.WildfireHelper;
 import com.wildfire.main.entitydata.PlayerConfig;
-
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.living.ArmorStandEntity;
 import net.minecraft.entity.living.player.PlayerEntity;
@@ -23,7 +22,7 @@ public abstract class ArmorStandEntityMixin {
 
 	@Inject(method = "interactAt", at = @At("HEAD"))
 	public void wildfiregender$equipArmorStandChestplate(PlayerEntity player, Vec3d interactionPoint, InteractionHand hand,
-			CallbackInfoReturnable<InteractionResult> cir) {
+														 CallbackInfoReturnable<InteractionResult> cir) {
 		if (player == null || player.world.isClient) return;
 
 		ItemStack stack = player.getItemInHand(hand);

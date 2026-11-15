@@ -2,7 +2,6 @@ package com.wildfire.mixins;
 
 import com.wildfire.render.GenderArmorLayer;
 import com.wildfire.render.GenderLayer;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.entity.living.player.ClientPlayerEntity;

@@ -1,26 +1,24 @@
 package com.wildfire.api;
 
+import com.wildfire.main.Gender;
+import com.wildfire.main.WildfireGender;
+import com.wildfire.main.config.Configuration;
+import com.wildfire.main.entitydata.PlayerConfig;
+import net.minecraft.entity.living.player.PlayerEntity;
+import net.minecraft.item.Item;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import com.wildfire.main.Gender;
-import com.wildfire.main.WildfireGender;
-import com.wildfire.main.config.Configuration;
-import com.wildfire.main.entitydata.PlayerConfig;
-
-import net.minecraft.entity.living.player.PlayerEntity;
-import net.minecraft.item.Item;
-
 @SuppressWarnings("unused")
 public class WildfireAPI {
 
-	private static final Map<Item, IGenderArmor> GENDER_ARMORS = new HashMap<Item, IGenderArmor>();
+	private static final Map<Item, IGenderArmor> GENDER_ARMORS = new HashMap<>();
 
 	/**
 	 * Add custom physics resistance attributes to a chestplate.

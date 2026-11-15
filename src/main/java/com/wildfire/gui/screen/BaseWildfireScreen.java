@@ -1,15 +1,17 @@
 package com.wildfire.gui.screen;
 
-import java.util.UUID;
-
 import com.wildfire.gui.WildfireButton;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.entitydata.PlayerConfig;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public abstract class BaseWildfireScreen extends Screen {
@@ -51,10 +53,8 @@ public abstract class BaseWildfireScreen extends Screen {
 			if (wildfireButton.getTooltip() == null) continue;
 			if (mouseX >= button.x && mouseY >= button.y && mouseX < button.x + button.getWidth() && mouseY < button.y + wildfireButton.getHeight()) {
 				String[] lines = wildfireButton.getTooltip().split("\n");
-				java.util.List<String> tooltip = new java.util.ArrayList<String>();
-				for (String line : lines) {
-					tooltip.add(line);
-				}
+				List<String> tooltip = new ArrayList<>();
+				Collections.addAll(tooltip, lines);
 				this.renderTooltip(tooltip, mouseX, mouseY);
 				break;
 			}

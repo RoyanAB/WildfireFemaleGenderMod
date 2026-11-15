@@ -1,9 +1,9 @@
 package com.wildfire.main.entitydata;
 
-import java.util.function.Consumer;
-
 import com.wildfire.main.config.ConfigKey;
 import com.wildfire.main.config.Configuration;
+
+import java.util.function.Consumer;
 
 /**
  * Data class representing an entity's breast appearance settings.
@@ -32,12 +32,7 @@ public class Breasts {
 	}
 
 	public boolean updateXOffset(float value) {
-		return updateValue(Configuration.BREASTS_OFFSET_X, value, new Consumer<Float>() {
-			@Override
-			public void accept(Float v) {
-				xOffset = v;
-			}
-		});
+		return updateValue(Configuration.BREASTS_OFFSET_X, value, v -> xOffset = v);
 	}
 
 	/**
@@ -48,12 +43,7 @@ public class Breasts {
 	}
 
 	public boolean updateYOffset(float value) {
-		return updateValue(Configuration.BREASTS_OFFSET_Y, value, new Consumer<Float>() {
-			@Override
-			public void accept(Float v) {
-				yOffset = v;
-			}
-		});
+		return updateValue(Configuration.BREASTS_OFFSET_Y, value, v -> yOffset = v);
 	}
 
 	/**
@@ -64,12 +54,7 @@ public class Breasts {
 	}
 
 	public boolean updateZOffset(float value) {
-		return updateValue(Configuration.BREASTS_OFFSET_Z, value, new Consumer<Float>() {
-			@Override
-			public void accept(Float v) {
-				zOffset = v;
-			}
-		});
+		return updateValue(Configuration.BREASTS_OFFSET_Z, value, v -> zOffset = v);
 	}
 
 	/**
@@ -80,12 +65,7 @@ public class Breasts {
 	}
 
 	public boolean updateCleavage(float value) {
-		return updateValue(Configuration.BREASTS_CLEAVAGE, value, new Consumer<Float>() {
-			@Override
-			public void accept(Float v) {
-				cleavage = v;
-			}
-		});
+		return updateValue(Configuration.BREASTS_CLEAVAGE, value, v -> cleavage = v);
 	}
 
 	/**
@@ -96,11 +76,6 @@ public class Breasts {
 	}
 
 	public boolean updateUniboob(boolean value) {
-		return updateValue(Configuration.BREASTS_UNIBOOB, value, new Consumer<Boolean>() {
-			@Override
-			public void accept(Boolean v) {
-				uniboob = v;
-			}
-		});
+		return updateValue(Configuration.BREASTS_UNIBOOB, value, v -> uniboob = v);
 	}
 }

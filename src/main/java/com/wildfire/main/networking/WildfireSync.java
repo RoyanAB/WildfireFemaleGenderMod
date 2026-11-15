@@ -1,19 +1,15 @@
 package com.wildfire.main.networking;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.entitydata.PlayerConfig;
-
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
-import net.ornithemc.osl.core.api.util.function.IOConsumer;
 import net.ornithemc.osl.networking.api.ChannelIdentifiers;
-import net.ornithemc.osl.networking.api.PacketBuffer;
-import net.ornithemc.osl.networking.api.server.ServerPacketListener;
 import net.ornithemc.osl.networking.api.server.ServerPlayNetworking;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Common (server-safe) side of the mod's custom payload networking. The client-only half lives in
@@ -21,18 +17,17 @@ import net.ornithemc.osl.networking.api.server.ServerPlayNetworking;
  */
 public class WildfireSync {
 
-	/** Channel used for server-to-client gender synchronisation. */
+	/**
+	 * Channel used for server-to-client gender synchronisation.
+	 */
 	public static final NamespacedIdentifier CHANNEL_SYNC = ChannelIdentifiers.register(WildfireGender.MODID, "sync", true, false);
-	/** Channel used for client-to-server gender synchronisation. */
+	/**
+	 * Channel used for client-to-server gender synchronisation.
+	 */
 	public static final NamespacedIdentifier CHANNEL_C2S = ChannelIdentifiers.register(WildfireGender.MODID, "c2s", false, true);
 
 	public static void registerServer() {
-		ServerPlayNetworking.registerListener(CHANNEL_C2S, new ServerPacketListener.Buffer() {
-			@Override
-			public void handle(Context ctx, PacketBuffer data) {
-				new SyncToServerPacket(data).handle(ctx.player());
-			}
-		});
+		ServerPlayNetworking.registerListener(CHANNEL_C2S, (ctx, data) -> new SyncToServerPacket(data).handle(ctx.player()));
 	}
 
 	/**
@@ -42,19 +37,14 @@ public class WildfireSync {
 		if (playerConfig == null || toSync.world == null || toSync.world.getServer() == null) return;
 
 		final SyncToClientPacket syncPacket = new SyncToClientPacket(playerConfig);
-		List<ServerPlayerEntity> targets = new ArrayList<ServerPlayerEntity>();
+		List<ServerPlayerEntity> targets = new ArrayList<>();
 		for (PlayerEntity player : toSync.world.players) {
 			if (player instanceof ServerPlayerEntity && !player.getUuid().equals(toSync.getUuid())) {
 				targets.add((ServerPlayerEntity) player);
 			}
 		}
 		for (ServerPlayerEntity sendTo : targets) {
-			ServerPlayNetworking.send(sendTo, CHANNEL_SYNC, new IOConsumer<PacketBuffer>() {
-				@Override
-				public void accept(PacketBuffer buffer) {
-					syncPacket.write(buffer);
-				}
-			});
+			ServerPlayNetworking.send(sendTo, CHANNEL_SYNC, syncPacket::write);
 		}
 	}
 
@@ -64,11 +54,6 @@ public class WildfireSync {
 	public static void sendToClient(ServerPlayerEntity sendTo, PlayerConfig toSync) {
 		if (toSync == null) return;
 		final SyncToClientPacket syncPacket = new SyncToClientPacket(toSync);
-		ServerPlayNetworking.send(sendTo, CHANNEL_SYNC, new IOConsumer<PacketBuffer>() {
-			@Override
-			public void accept(PacketBuffer buffer) {
-				syncPacket.write(buffer);
-			}
-		});
+		ServerPlayNetworking.send(sendTo, CHANNEL_SYNC, syncPacket::write);
 	}
 }
