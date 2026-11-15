@@ -16,7 +16,21 @@ public class WildfireGenderServer implements ModInitializer {
 		// for both sides.
 		WildfireSync.registerServer();
 
-		ServerConnectionEvents.PLAY_READY.register(ctx -> onPlayerJoin(ctx.player()));
+		ServerConnectionEvents.PLAY_READY.register(ctx -> {
+			final ServerPlayerEntity player = ctx.player();
+
+			// PLAY_READY is fired from OSL's handshake listener, which runs on the network thread. Move the
+			// synchronisation work onto the server thread before touching player/config state or sending packets.
+			ctx.server().execute(() -> {
+				if (player.removed || player.networkHandler == null) return;
+
+				try {
+					onPlayerJoin(player);
+				} catch (Exception e) {
+					WildfireGender.LOGGER.warn("Failed to sync gender data to joining player {}", player.getName(), e);
+				}
+			});
+		});
 	}
 
 	/**

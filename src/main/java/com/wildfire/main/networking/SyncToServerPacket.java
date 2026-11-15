@@ -16,10 +16,13 @@ public class SyncToServerPacket extends SyncPacket {
 	}
 
 	public void handle(ServerPlayerEntity player) {
-		if (player.getUuid().equals(uuid)) {
-			PlayerConfig plr = WildfireGender.getOrAddPlayerById(uuid);
+		// Only accept data for the sending player; ignore spoofed UUIDs.
+		if (player.removed || !player.getUuid().equals(uuid)) return;
+
+		PlayerConfig plr = WildfireGender.getOrAddPlayerById(uuid);
+		synchronized (plr) {
 			updatePlayerFromPacket(plr);
-			WildfireSync.sendToAllClients(player, plr);
 		}
+		WildfireSync.sendToAllClients(player, plr);
 	}
 }

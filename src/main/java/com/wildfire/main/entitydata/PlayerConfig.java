@@ -15,8 +15,8 @@ import java.util.function.Consumer;
  */
 public class PlayerConfig extends EntityConfig {
 
-	public boolean needsSync;
-	public SyncStatus syncStatus = SyncStatus.UNKNOWN;
+	public volatile boolean needsSync;
+	public volatile SyncStatus syncStatus = SyncStatus.UNKNOWN;
 
 	private final Configuration cfg;
 	private boolean armorPhysOverride = Configuration.ARMOR_PHYSICS_OVERRIDE.getDefault();
@@ -104,56 +104,61 @@ public class PlayerConfig extends EntityConfig {
 	public static PlayerConfig loadCachedPlayer(UUID uuid, boolean markForSync) {
 		PlayerConfig plr = WildfireGender.getPlayerById(uuid);
 		if (plr != null) {
-			// A sync packet may have arrived while the cached file was being read; server data is authoritative,
-			// so don't overwrite it with the (possibly stale) local file.
-			if (plr.syncStatus == SyncStatus.SYNCED && !markForSync) {
+			// Synchronize with packet handling: server data is authoritative, so a late disk read must not overwrite
+			// a configuration that was just received from the server.
+			synchronized (plr) {
+				if (plr.syncStatus == SyncStatus.SYNCED && !markForSync) {
+					return plr;
+				}
+				plr.syncStatus = SyncStatus.CACHED;
+
+				Configuration config = plr.getConfig();
+				plr.updateGender(config.get(Configuration.GENDER));
+				plr.updateBustSize(config.get(Configuration.BUST_SIZE));
+
+				plr.updateBreastPhysics(config.get(Configuration.BREAST_PHYSICS));
+				plr.updateShowBreastsInArmor(config.get(Configuration.SHOW_IN_ARMOR));
+				plr.updateArmorPhysicsOverride(config.get(Configuration.ARMOR_PHYSICS_OVERRIDE));
+				plr.updateBounceMultiplier(config.get(Configuration.BOUNCE_MULTIPLIER));
+				plr.updateFloppiness(config.get(Configuration.FLOPPY_MULTIPLIER));
+
+				Breasts breasts = plr.getBreasts();
+				breasts.updateXOffset(config.get(Configuration.BREASTS_OFFSET_X));
+				breasts.updateYOffset(config.get(Configuration.BREASTS_OFFSET_Y));
+				breasts.updateZOffset(config.get(Configuration.BREASTS_OFFSET_Z));
+				breasts.updateUniboob(config.get(Configuration.BREASTS_UNIBOOB));
+				breasts.updateCleavage(config.get(Configuration.BREASTS_CLEAVAGE));
+				if (markForSync) {
+					plr.needsSync = true;
+				}
 				return plr;
 			}
-			plr.syncStatus = SyncStatus.CACHED;
-			Configuration config = plr.getConfig();
-			plr.updateGender(config.get(Configuration.GENDER));
-			plr.updateBustSize(config.get(Configuration.BUST_SIZE));
-
-			plr.updateBreastPhysics(config.get(Configuration.BREAST_PHYSICS));
-			plr.updateShowBreastsInArmor(config.get(Configuration.SHOW_IN_ARMOR));
-			plr.updateArmorPhysicsOverride(config.get(Configuration.ARMOR_PHYSICS_OVERRIDE));
-			plr.updateBounceMultiplier(config.get(Configuration.BOUNCE_MULTIPLIER));
-			plr.updateFloppiness(config.get(Configuration.FLOPPY_MULTIPLIER));
-
-			Breasts breasts = plr.getBreasts();
-			breasts.updateXOffset(config.get(Configuration.BREASTS_OFFSET_X));
-			breasts.updateYOffset(config.get(Configuration.BREASTS_OFFSET_Y));
-			breasts.updateZOffset(config.get(Configuration.BREASTS_OFFSET_Z));
-			breasts.updateUniboob(config.get(Configuration.BREASTS_UNIBOOB));
-			breasts.updateCleavage(config.get(Configuration.BREASTS_CLEAVAGE));
-			if (markForSync) {
-				plr.needsSync = true;
-			}
-			return plr;
 		}
 		return null;
 	}
 
 	public static void saveGenderInfo(PlayerConfig plr) {
-		Configuration config = plr.getConfig();
-		config.set(Configuration.USERNAME, plr.uuid);
-		config.set(Configuration.GENDER, plr.getGender());
-		config.set(Configuration.BUST_SIZE, plr.getBustSize());
+		synchronized (plr) {
+			Configuration config = plr.getConfig();
+			config.set(Configuration.USERNAME, plr.uuid);
+			config.set(Configuration.GENDER, plr.getGender());
+			config.set(Configuration.BUST_SIZE, plr.getBustSize());
 
-		config.set(Configuration.BREAST_PHYSICS, plr.hasBreastPhysics());
-		config.set(Configuration.SHOW_IN_ARMOR, plr.showBreastsInArmor());
-		config.set(Configuration.ARMOR_PHYSICS_OVERRIDE, plr.getArmorPhysicsOverride());
-		config.set(Configuration.BOUNCE_MULTIPLIER, plr.getBounceMultiplier());
-		config.set(Configuration.FLOPPY_MULTIPLIER, plr.getFloppiness());
+			config.set(Configuration.BREAST_PHYSICS, plr.hasBreastPhysics());
+			config.set(Configuration.SHOW_IN_ARMOR, plr.showBreastsInArmor());
+			config.set(Configuration.ARMOR_PHYSICS_OVERRIDE, plr.getArmorPhysicsOverride());
+			config.set(Configuration.BOUNCE_MULTIPLIER, plr.getBounceMultiplier());
+			config.set(Configuration.FLOPPY_MULTIPLIER, plr.getFloppiness());
 
-		config.set(Configuration.BREASTS_OFFSET_X, plr.getBreasts().getXOffset());
-		config.set(Configuration.BREASTS_OFFSET_Y, plr.getBreasts().getYOffset());
-		config.set(Configuration.BREASTS_OFFSET_Z, plr.getBreasts().getZOffset());
-		config.set(Configuration.BREASTS_UNIBOOB, plr.getBreasts().isUniboob());
-		config.set(Configuration.BREASTS_CLEAVAGE, plr.getBreasts().getCleavage());
+			config.set(Configuration.BREASTS_OFFSET_X, plr.getBreasts().getXOffset());
+			config.set(Configuration.BREASTS_OFFSET_Y, plr.getBreasts().getYOffset());
+			config.set(Configuration.BREASTS_OFFSET_Z, plr.getBreasts().getZOffset());
+			config.set(Configuration.BREASTS_UNIBOOB, plr.getBreasts().isUniboob());
+			config.set(Configuration.BREASTS_CLEAVAGE, plr.getBreasts().getCleavage());
 
-		config.save();
-		plr.needsSync = true;
+			config.save();
+			plr.needsSync = true;
+		}
 	}
 
 	@Override

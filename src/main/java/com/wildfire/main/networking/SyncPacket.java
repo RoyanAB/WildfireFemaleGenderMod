@@ -15,6 +15,7 @@ abstract class SyncPacket {
 	// physics variables
 	private final boolean breastPhysics;
 	private final boolean showInArmor;
+	private final boolean armorPhysicsOverride;
 	private final float bounceMultiplier;
 	private final float floppyMultiplier;
 
@@ -31,6 +32,7 @@ abstract class SyncPacket {
 
 		this.breastPhysics = plr.hasBreastPhysics();
 		this.showInArmor = plr.showBreastsInArmor();
+		this.armorPhysicsOverride = plr.getArmorPhysicsOverride();
 		this.bounceMultiplier = plr.getBounceMultiplier();
 		this.floppyMultiplier = plr.getFloppiness();
 
@@ -45,11 +47,15 @@ abstract class SyncPacket {
 
 	protected SyncPacket(PacketBuffer buffer) {
 		this.uuid = buffer.readUuid();
-		this.gender = buffer.readEnum(Gender.class);
+		// Read the enum ordinal manually so a malformed packet cannot throw an ArrayIndexOutOfBoundsException.
+		int genderOrdinal = buffer.readVarInt();
+		Gender[] genders = Gender.values();
+		this.gender = genderOrdinal >= 0 && genderOrdinal < genders.length ? genders[genderOrdinal] : Gender.MALE;
 		this.bustSize = buffer.readFloat();
 
 		this.breastPhysics = buffer.readBoolean();
 		this.showInArmor = buffer.readBoolean();
+		this.armorPhysicsOverride = buffer.readBoolean();
 		this.bounceMultiplier = buffer.readFloat();
 		this.floppyMultiplier = buffer.readFloat();
 
@@ -62,10 +68,11 @@ abstract class SyncPacket {
 
 	public void write(PacketBuffer buffer) {
 		buffer.writeUuid(this.uuid);
-		buffer.writeEnum(this.gender);
+		buffer.writeVarInt(this.gender.ordinal());
 		buffer.writeFloat(this.bustSize);
 		buffer.writeBoolean(this.breastPhysics);
 		buffer.writeBoolean(this.showInArmor);
+		buffer.writeBoolean(this.armorPhysicsOverride);
 		buffer.writeFloat(this.bounceMultiplier);
 		buffer.writeFloat(this.floppyMultiplier);
 
@@ -82,6 +89,7 @@ abstract class SyncPacket {
 
 		plr.updateBreastPhysics(breastPhysics);
 		plr.updateShowBreastsInArmor(showInArmor);
+		plr.updateArmorPhysicsOverride(armorPhysicsOverride);
 		plr.updateBounceMultiplier(bounceMultiplier);
 		plr.updateFloppiness(floppyMultiplier);
 

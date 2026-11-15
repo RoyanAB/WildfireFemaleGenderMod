@@ -16,8 +16,12 @@ public class SyncToClientPacket extends SyncPacket {
 	}
 
 	public void handle(PlayerEntity player) {
-		if (!player.getUuid().equals(uuid)) {
-			PlayerConfig plr = WildfireGender.getOrAddPlayerById(uuid);
+		if (player.getUuid().equals(uuid)) return;
+
+		PlayerConfig plr = WildfireGender.getOrAddPlayerById(uuid);
+		// Keep the update and the status change atomic with respect to PlayerConfig#loadCachedPlayer, which may still
+		// be reading the local cache on the IO thread.
+		synchronized (plr) {
 			updatePlayerFromPacket(plr);
 			plr.syncStatus = PlayerConfig.SyncStatus.SYNCED;
 		}
