@@ -3,6 +3,7 @@ package com.wildfire.gui;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.game.inventory.SurvivalInventoryScreen;
 import net.minecraft.client.render.platform.GLX;
 import net.minecraft.client.render.platform.GlStateManager;
 import net.minecraft.entity.living.LivingEntity;
@@ -28,7 +29,7 @@ public final class EntityPreview {
 		minecraft.gameRenderer.enableLightMap();
 		GLX.multiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
 		try {
-			net.minecraft.client.gui.screen.game.inventory.SurvivalInventoryScreen.renderEntity(x, y, size, mouseX, mouseY, entity);
+			SurvivalInventoryScreen.renderEntity(x, y, size, mouseX, mouseY, entity);
 		} finally {
 			minecraft.gameRenderer.disableLightMap();
 			GlStateManager.color4f(1f, 1f, 1f, 1f);
