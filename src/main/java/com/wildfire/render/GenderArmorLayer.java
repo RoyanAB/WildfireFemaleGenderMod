@@ -128,27 +128,30 @@ public class GenderArmorLayer<T extends LivingEntity> extends GenderLayer<T> {
 		GlStateManager.depthMask(false);
 
 		BreastModelBox armor = side == BreastSide.LEFT ? lBoobArmor : rBoobArmor;
-		for (int i = 0; i < 2; i++) {
-			GlStateManager.disableLighting();
-			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_COLOR, GlStateManager.DestFactor.ONE);
+		try {
+			for (int i = 0; i < 2; i++) {
+				GlStateManager.disableLighting();
+				GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_COLOR, GlStateManager.DestFactor.ONE);
+				GlStateManager.matrixMode(5890);
+				GlStateManager.loadIdentity();
+				GlStateManager.scalef(0.33333334F, 0.33333334F, 0.33333334F);
+				GlStateManager.rotatef(30.0F - i * 60.0F, 0.0F, 0.0F, 1.0F);
+				GlStateManager.translatef(0.0F, f * (0.001F + i * 0.003F) * 20.0F, 0.0F);
+				GlStateManager.matrixMode(5888);
+				renderBox(armor, 0.38F, 0.19F, 0.608F, 1f);
+				GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+			}
+		} finally {
 			GlStateManager.matrixMode(5890);
 			GlStateManager.loadIdentity();
-			GlStateManager.scalef(0.33333334F, 0.33333334F, 0.33333334F);
-			GlStateManager.rotatef(30.0F - i * 60.0F, 0.0F, 0.0F, 1.0F);
-			GlStateManager.translatef(0.0F, f * (0.001F + i * 0.003F) * 20.0F, 0.0F);
 			GlStateManager.matrixMode(5888);
-			renderBox(armor, 0.38F, 0.19F, 0.608F, 1f);
-			GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+			GlStateManager.enableLighting();
+			GlStateManager.depthMask(true);
+			GlStateManager.depthFunc(GL11.GL_LEQUAL);
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+			GlStateManager.disableBlend();
+			GlStateManager.color4f(1f, 1f, 1f, 1f);
+			minecraft.gameRenderer.resetFogColor(false);
 		}
-
-		GlStateManager.matrixMode(5890);
-		GlStateManager.loadIdentity();
-		GlStateManager.matrixMode(5888);
-		GlStateManager.enableLighting();
-		GlStateManager.depthMask(true);
-		GlStateManager.depthFunc(GL11.GL_LEQUAL);
-		GlStateManager.disableBlend();
-		GlStateManager.color4f(1f, 1f, 1f, 1f);
-		minecraft.gameRenderer.resetFogColor(false);
 	}
 }

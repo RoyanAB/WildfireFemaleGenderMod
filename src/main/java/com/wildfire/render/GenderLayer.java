@@ -120,6 +120,9 @@ public class GenderLayer<T extends LivingEntity> implements EntityRenderLayer<T>
 			}
 		} catch (Exception e) {
 			WildfireGender.LOGGER.error("Failed to render breast layer", e);
+		} finally {
+			// renderBox() changes the GL colour; never leak a tint into the next layer/entity.
+			GlStateManager.color4f(1f, 1f, 1f, 1f);
 		}
 	}
 
