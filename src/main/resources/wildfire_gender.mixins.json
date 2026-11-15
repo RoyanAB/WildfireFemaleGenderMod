@@ -1,0 +1,22 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "com.wildfire.mixins",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [
+		"ArmorStandEntityMixin",
+		"LivingEntityMixin",
+		"PlayerEntityAccessorMixin"
+	],
+	"client": [
+		"ArmorStandRendererMixin",
+		"BreastPhysicsTickMixin",
+		"ClientPlayNetworkHandlerMixin",
+		"PlayerRendererMixin"
+	],
+	"server": [
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

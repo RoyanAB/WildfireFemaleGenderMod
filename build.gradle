@@ -54,6 +54,13 @@ java {
 	// withJavadocJar()
 }
 
+// Minecraft 1.12.2 must be launched with Java 8; the Gradle daemon itself needs a newer JVM for Loom.
+tasks.withType(JavaExec).configureEach {
+	javaLauncher = javaToolchains.launcherFor {
+		languageVersion = JavaLanguageVersion.of(8)
+	}
+}
+
 // If you plan to use a different file for the license, don't forget to change the file name here!
 jar {
 	from('LICENSE') {

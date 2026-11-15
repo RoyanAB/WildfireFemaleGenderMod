@@ -1,31 +1,49 @@
-# Ornithe Template Mod
+# Wildfire's Female Gender Mod — Minecraft 1.12.2 (Ornithe/Fabric)
 
-The official Ornithe template mod. You can use it as a template for your own mods!
+A port of [Wildfire's Female Gender Mod](https://github.com/WildfireRomeo/WildfireFemaleGenderMod)
+3.1 (originally for Minecraft 1.20.2) to **Minecraft 1.12.2**, built on the
+[Ornithe](https://ornithemc.net/) toolchain (Feather mappings, Fabric Loader and the
+Ornithe Standard Libraries).
 
-## Usage
+## Features
 
-In order to use this mod as a template:
+- Female, male and other genders, with per-player gender, breast size, separation, height,
+  depth, rotation (cleavage), dual-physics (uniboob), breast physics, bounce intensity,
+  breast momentum, "hide in armor", armor physics override and female hurt sounds.
+- Full wardrobe UI (gender selection, appearance settings, character settings) with preset
+  support, player preview and the original layout/textures.
+- Breast rendering on players (skin layer, jacket overlay) and chestplate rendering /
+  enchantment glint on players and armor stands.
+- Physics driven breast movement (walking, falling, sneaking, sleeping, boats, minecarts,
+  horses, pigs, arm swings, breathing animation, armor resistance/tightness).
+- Custom OSL networking to synchronise settings between client and server, including
+  syncing on join and broadcasting changes to all other players.
+- Armor stand support: chestplates equipped by a player copy that player's breast settings
+  into the item's NBT, and armor stands render the corresponding breast armor.
+- All original translations converted to the 1.12.2 `.lang` format, plus the original
+  textures and hurt sounds.
 
-1. Create a new repository from this template with `Use this template`
-2. Clone the recently-created repo on your PC
-3. Make the necessary changes in order to make it yours:
-    - Update `gradle.properties` in order to use your 
-        - Update your mod's Maven group and mod ID
-            - If you don't know which Maven group to use, and you are planning to host the mod's source code on GitHub, use `io.github.<Your_Username_Here>`
-        - Update your mod's dependencies
-            - Check [our develop page](https://ornithemc.net/develop) for the latest available versions.
-    - Update `fabric.mod.json` in order to reflect your mod's metadata
-        - If you are planning to include (jar-in-jar) a mod, don't forget to declare its dependency on it!
-        - The icon provided here is a placeholder one. If you aren't able to replace it yet, you can delete it and remove the "icon" property
-    - Create a LICENSE file for this mod! If you don't know which license to use, check out [here](https://choosealicense.com/).
-        - If you use `LICENSE.md`, don't forget to update the buildscript in order to use that file name!
-        - In `fabric.mod.json`, don't forget to put the license's [SPDX identifier](https://spdx.org/licenses/) under the `"license"` property`.
-        - The GPLv3 and AGPLv3 are not valid mod licenses, so you can use almost any license except for those.
-    - Update the Java sub-directory structure so it reflects your Maven group
-4. The mod is now ready to be worked on!
+## Building
+
+Java 8 is required to run the game; the Gradle build itself requires a newer JDK because
+Loom 1.18 needs Java 25+. The build is configured to launch the game with a Java 8
+toolchain automatically (any locally installed JDK 8 is detected by Gradle).
+
+```
+# Gradle needs a recent JVM (Java 25+), while the game runs on Java 8
+./gradlew build
+```
+
+The remapped mod jar is written to `build/libs/`.
+
+Development runs:
+
+```
+./gradlew runClient
+./gradlew runServer
+```
 
 ## License
 
-This template on the OrnitheMC GitHub is licensed under the [Creative Common Zero v1.0 license](./LICENSE-TEMPLATE.md).
-
-Mods created with this template are not automatically licensed under the CC0, and are not required to give any kind of credit back to OrnitheMC for this template.
+This mod is licensed under the GNU Lesser General Public License v3.0; see [LICENSE](./LICENSE).
+The original mod is Copyright (C) 2023 WildfireRomeo.
