@@ -41,7 +41,7 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
 			}
 		};
 
-		this.addButton(new WildfireButton(this.width / 2 + 178, j - 72, 9, 9, "X", new Runnable() {
+		this.addButton(new WildfireButton(this.width / 2 + 178, j - 59, 9, 9, "X", new Runnable() {
 			@Override
 			public void run() {
 				Minecraft.getInstance().openScreen(parent);
@@ -105,9 +105,11 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
 		super.renderBackground();
 		int x = this.width / 2;
 		int y = this.height / 2;
-		fill(x + 28, y - 64 - 21, x + 190, y + 68, 0x55000000);
-		fill(x + 29, y - 63 - 21, x + 189, y - 60, 0x55000000);
-		GuiHelper.drawText(this.textRenderer, this.title, x + 32, y - 60 - 21, 0xFFFFFF);
+		// The former Presets/Customization tabs used to occupy the space below the title; the panel top is
+		// compacted so the title sits directly above the first slider now that the tabs are gone.
+		fill(x + 28, y - 72, x + 190, y + 68, 0x55000000);
+		fill(x + 29, y - 71, x + 189, y - 60, 0x55000000);
+		GuiHelper.drawText(this.textRenderer, this.title, x + 32, y - 69, 0xFFFFFF);
 	}
 
 	@Override
